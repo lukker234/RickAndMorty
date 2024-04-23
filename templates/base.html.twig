@@ -25,10 +25,9 @@
         </div>
 
         <div class="container">
-            <div id="episode-details">
+            <div id="episode-details" class="character-grid-container">
                 <!-- Episode details will be displayed here -->
             </div>
-        </div>
 
         <script>
             function showEpisodeDetails() {
@@ -41,18 +40,32 @@
                         <p>Air Date: ${data.air_date}</p>
                         <p>Episode Code: ${data.episode}</p>
                         <p>Characters:</p>
-                        <ul>
-                    `;
-                        data.characters.forEach(characterUrl => {
-                            episodeDetailsHTML += `<li><a href="${characterUrl}">${characterUrl}</a></li>`;
-                        });
-                        episodeDetailsHTML += `</ul>`;
-                        document.getElementById("episode-details").innerHTML = episodeDetailsHTML;
+                        <div class="character-grid">`;
+
+                        const characterPromises = data.characters.map(characterUrl =>
+                            fetch(characterUrl)
+                                .then(response => response.json())
+                                .then(characterData => {
+                                    episodeDetailsHTML += `
+                                    <div class="character">
+                                        <img src="${characterData.image}" alt="${characterData.name}">
+                                        <p>${characterData.name}</p>
+                                    </div>`;
+                                })
+                        );
+
+                        Promise.all(characterPromises)
+                            .then(() => {
+                                episodeDetailsHTML += `</div>`;
+                                document.getElementById("episode-details").innerHTML = episodeDetailsHTML;
+                            })
+                            .catch(error => console.error('Error fetching character details:', error));
                     })
                     .catch(error => console.error('Error fetching episode details:', error));
             }
         </script>
     {% endblock %}
+
 
 
 
