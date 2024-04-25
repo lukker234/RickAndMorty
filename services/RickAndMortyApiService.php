@@ -29,6 +29,11 @@ class CharacterService
         return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/character');
     }
 
+    public function getSingleCharacter(int $characterId): array
+    {
+        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/character/'.$characterId);
+    }
+
     public function getAllLocations(): array
     {
         return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/location');
