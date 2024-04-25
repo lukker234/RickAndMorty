@@ -1,0 +1,9 @@
+<div class="container">
+    <h1>Rick and Morty Episodes</h1>
+    <label for="episode">Select an episode:</label>
+    <select name="episode" id="episode" onchange="showEpisodeDetails()">
+        {% for episode in episodes %}
+            <option value="{{ episode.url }}">{{ episode.name }}</option>
+        {% endfor %}
+    </select>
+</div>

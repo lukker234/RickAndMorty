@@ -1,0 +1,44 @@
+<div class="container">
+    <div id="episode-details" class="character-grid-container"></div>
+</div>
+
+    <script>
+        function openCharacterPage(characterId) {
+            const baseUrl = window.location.origin;
+            window.location.href = `${baseUrl}/character/${characterId}`;
+        }
+
+        function showEpisodeDetails() {
+            const episodeUrl = document.getElementById("episode").value;
+            fetch(episodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    let episodeDetailsHTML = `
+                        <h2>${data.name}</h2>
+                        <p>Air Date: ${data.air_date}</p>
+                        <p>Episode Code: ${data.episode}</p>
+                        <p>Characters:</p>
+                        <div class="character-grid">`;
+
+                    const characterPromises = data.characters.map(characterUrl =>
+                        fetch(characterUrl)
+                            .then(response => response.json())
+                            .then(characterData => {
+                                episodeDetailsHTML += `
+                                    <div class="character" onclick="openCharacterPage('${characterData.id}')">
+                                        <img src="${characterData.image}" alt="${characterData.name}">
+                                        <p>${characterData.name}</p>
+                                    </div>`;
+                            })
+                    );
+
+                    Promise.all(characterPromises)
+                        .then(() => {
+                            episodeDetailsHTML += `</div>`;
+                            document.getElementById("episode-details").innerHTML = episodeDetailsHTML;
+                        })
+                        .catch(error => console.error('Error fetching character details:', error));
+                })
+                .catch(error => console.error('Error fetching episode details:', error));
+        }
+    </script>
