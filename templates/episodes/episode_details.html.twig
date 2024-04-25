@@ -1,5 +1,5 @@
-<div class="container">
-    <div id="episode-details" class="character-grid-container"></div>
+<div class="container w-1/4">
+    <div id="episode-details"></div>
 </div>
 
     <script>
@@ -18,16 +18,16 @@
                         <p>Air Date: ${data.air_date}</p>
                         <p>Episode Code: ${data.episode}</p>
                         <p>Characters:</p>
-                        <div class="character-grid">`;
+                        <div class="overflow-x-auto p-2 mb-4 max-h-96 grid grid-cols-3 gap-4">`;
 
                     const characterPromises = data.characters.map(characterUrl =>
                         fetch(characterUrl)
                             .then(response => response.json())
                             .then(characterData => {
                                 episodeDetailsHTML += `
-                                    <div class="character" onclick="openCharacterPage('${characterData.id}')">
-                                        <img src="${characterData.image}" alt="${characterData.name}">
-                                        <p>${characterData.name}</p>
+                                    <div class="items-center justify-center" onclick="openCharacterPage('${characterData.id}')">
+                                        <img src="${characterData.image}" class="max-w-full h-auto rounded-lg" alt="${characterData.name}">
+                                        <p class="text-center">${characterData.name}</p>
                                     </div>`;
                             })
                     );

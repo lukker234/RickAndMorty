@@ -21,18 +21,6 @@ body {
     width: 400px;
 }
 
-.dropdown_container {
-    display: block;
-    justify-content: space-between;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 10px 0;
-}
-
-.dropdown_container > * {
-    margin-bottom: 10px; /* Adjust the margin value as needed */
-}
-
 h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -84,27 +72,4 @@ button {
 
 button:hover {
     background-color: #45a049;
-}
-
-.character-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    max-height: 500px;
-    max-width: 100%;
-    overflow-x: auto;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-.character {
-    width: calc(33.33% - 20px);
-    text-align: center;
-    cursor: pointer;
-}
-
-.character img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
 }

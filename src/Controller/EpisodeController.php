@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EpisodeController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/dsadasda')]
     public function episodes(): Response
     {
         $characterService = new RickAndMortyApiService();
