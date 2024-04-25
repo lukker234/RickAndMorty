@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Character Details{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Character Details</h1>
+    <div class="card">
+        <img src="{{ character.image }}" class="card-img" alt="{{ character.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ character.name }}</h5>
+            <p class="card-text">Status: {{ character.status }}</p>
+            <p class="card-text">Species: {{ character.species }}</p>
+            <p class="card-text">Gender: {{ character.gender }}</p>
+            <p class="card-text">Origin: {{ character.origin.name }}</p>
+            <p class="card-text">Location: {{ character.location.name }}</p>
+            <a href="{{ character.url }}" class="btn btn-primary">More details</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
