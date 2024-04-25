@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-class LocationController
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class LocationController extends AbstractController
 {
 
 }

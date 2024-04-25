@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-class DimensionController
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class DimensionController extends AbstractController
 {
 
 }
