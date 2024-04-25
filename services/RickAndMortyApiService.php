@@ -4,7 +4,7 @@ namespace services;
 
 use GuzzleHttp\Client;
 
-class CharacterService
+class RickAndMortyApiService
 {
     public function guzzleClient(string $method, string $url): array
     {
