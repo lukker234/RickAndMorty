@@ -36,11 +36,7 @@ class RickAndMortyApiService
                 }
 
                 $allResults = array_merge($allResults, $decodedResponse['results'] ?? $decodedResponse);
-                $nextPageUrl = $decodedResponse['info']['next'] ?? $decodedResponse;
-
-                if (!isset($decodedResponse['info'])) {
-                    break;
-                }
+                $nextPageUrl = $decodedResponse['info']['next'] ?? null;
 
             } while ($nextPageUrl !== null);
 
