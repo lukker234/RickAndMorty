@@ -8,19 +8,18 @@
             window.location.href = `${baseUrl}/character/${characterId}`;
         }
 
-        function showEpisodeDetails() {
-            const episodeUrl = document.getElementById("dimension").value;
-            fetch(episodeUrl)
+        function showDimensionDetails() {
+            const locationUrl = document.getElementById("dimension").value;
+
+            fetch(locationUrl)
                 .then(response => response.json())
                 .then(data => {
                     let dimensionDetailsHTML = `
-                        <h2>${data.name}</h2>
-                        <p>Air Date: ${data.air_date}</p>
-                        <p>Episode Code: ${data.episode}</p>
+                        <h2>Dimension: ${data.name}</h2>
                         <p>Characters:</p>
                         <div class="overflow-x-auto p-2 mb-4 max-h-96 grid grid-cols-3 gap-4">`;
 
-                    const characterPromises = data.characters.map(characterUrl =>
+                    const characterPromises = data.residents.map(characterUrl =>
                         fetch(characterUrl)
                             .then(response => response.json())
                             .then(characterData => {
@@ -39,6 +38,6 @@
                         })
                         .catch(error => console.error('Error fetching character details:', error));
                 })
-                .catch(error => console.error('Error fetching episode details:', error));
+                .catch(error => console.error('Error fetching dimension details:', error));
         }
     </script>

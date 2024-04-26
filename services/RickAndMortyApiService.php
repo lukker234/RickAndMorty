@@ -76,7 +76,7 @@ class RickAndMortyApiService
 
             if (isset($data) && is_array($data)) {
                 return array_map(function ($dimension) {
-                    return $dimension['name'];
+                    return $dimension;
                 }, $data);
             } else {
                 return ['No dimensions found.'];
