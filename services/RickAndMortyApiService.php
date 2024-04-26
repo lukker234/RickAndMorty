@@ -2,6 +2,7 @@
 
 namespace services;
 
+use Exception;
 use GuzzleHttp\Client;
 
 class RickAndMortyApiService
@@ -10,15 +11,11 @@ class RickAndMortyApiService
     {
         $client = new Client();
         $response = $client->request($method, $url);
-
-        // Get the body content as a string
         $bodyContent = $response->getBody()->getContents();
-
-        // Decode the JSON string into an associative array
         $decodedResponse = json_decode($bodyContent, true);
 
         if ($decodedResponse === null) {
-            throw new \Exception('Error decoding JSON response from API');
+            throw new Exception('Error decoding JSON response from API');
         }
 
         return $decodedResponse;
@@ -42,6 +39,23 @@ class RickAndMortyApiService
     public function getAllEpisodes(): array
     {
         return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/episode');
+    }
+
+    public function getAllDimensions(): array
+    {
+        try {
+            $data = $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/location');
+
+            if (isset($data['results']) && is_array($data['results'])) {
+                return array_map(function ($dimension) {
+                    return $dimension['name'];
+                }, $data['results']);
+            } else {
+                return ['No dimensions found.'];
+            }
+        } catch (Exception $e) {
+            return ['Error: ' . $e->getMessage()];
+        }
     }
 
     public function getEpisodeDetails(): array

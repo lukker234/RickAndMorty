@@ -1,0 +1,9 @@
+<div class="container">
+    <h1>Rick and Morty Dimensions</h1>
+    <label for="dimension">Select a dimension:</label>
+    <select name="dimension" id="dimension" onchange="showEpisodeDetails()">
+        {% for dimension in dimensions %}
+            <option>{{ dimension }}</option>
+        {% endfor %}
+    </select>
+</div>
