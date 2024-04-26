@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a2038cd92a54107248ff3610d06fa66",
+    "content-hash": "e968d9e02af1f1d385657c7f6f9c0404",
     "packages": [
         {
             "name": "composer/semver",
@@ -411,6 +411,109 @@
                 }
             ],
             "time": "2023-12-03T20:05:35+00:00"
+        },
+        {
+            "name": "netresearch/jsonmapper",
+            "version": "v4.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cweiske/jsonmapper.git",
+                "reference": "132c75c7dd83e45353ebb9c6c9f591952995bbf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/132c75c7dd83e45353ebb9c6c9f591952995bbf0",
+                "reference": "132c75c7dd83e45353ebb9c6c9f591952995bbf0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7.5 || ~8.0 || ~9.0 || ~10.0",
+                "squizlabs/php_codesniffer": "~3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonMapper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Weiske",
+                    "email": "cweiske@cweiske.de",
+                    "homepage": "http://github.com/cweiske/jsonmapper/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Map nested JSON structures onto PHP classes",
+            "support": {
+                "email": "cweiske@cweiske.de",
+                "issues": "https://github.com/cweiske/jsonmapper/issues",
+                "source": "https://github.com/cweiske/jsonmapper/tree/v4.4.1"
+            },
+            "time": "2024-01-31T06:18:54+00:00"
+        },
+        {
+            "name": "nickbeen/rick-and-morty-api-php",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nickbeen/rick-and-morty-api-php.git",
+                "reference": "8df08219920d2845bb76444c535ad698be399728"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nickbeen/rick-and-morty-api-php/zipball/8df08219920d2845bb76444c535ad698be399728",
+                "reference": "8df08219920d2845bb76444c535ad698be399728",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.4",
+                "netresearch/jsonmapper": "^4.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NickBeen\\RickAndMortyPhpApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nick Been",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Rick And Morty API PHP Client",
+            "homepage": "https://github.com/nickbeen/rick-and-morty-api-php",
+            "keywords": [
+                "api",
+                "php",
+                "rick and morty"
+            ],
+            "support": {
+                "issues": "https://github.com/nickbeen/rick-and-morty-api-php/issues",
+                "source": "https://github.com/nickbeen/rick-and-morty-api-php/tree/2.0.0"
+            },
+            "time": "2023-04-25T19:46:50+00:00"
         },
         {
             "name": "psr/cache",

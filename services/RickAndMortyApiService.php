@@ -4,52 +4,80 @@ namespace services;
 
 use Exception;
 use GuzzleHttp\Client;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class RickAndMortyApiService
 {
-    public function guzzleClient(string $method, string $url): array
-    {
-        $client = new Client();
-        $response = $client->request($method, $url);
-        $bodyContent = $response->getBody()->getContents();
-        $decodedResponse = json_decode($bodyContent, true);
+    private $cache;
 
-        if ($decodedResponse === null) {
-            throw new Exception('Error decoding JSON response from API');
+    public function __construct()
+    {
+        // Initialize the cache adapter
+        $this->cache = new FilesystemAdapter();
+    }
+
+    public function getAllPages(string $url): array
+    {
+        $cacheKey = md5($url);
+        $cachedResults = $this->cache->getItem($cacheKey);
+
+        if (!$cachedResults->isHit()) {
+            $client = new Client();
+            $allResults = [];
+            $nextPageUrl = $url;
+
+            do {
+                $response = $client->request('GET', $nextPageUrl);
+                $bodyContent = $response->getBody()->getContents();
+                $decodedResponse = json_decode($bodyContent, true);
+
+                if ($decodedResponse === null) {
+                    throw new Exception('Error decoding JSON response from API');
+                }
+
+                $allResults = array_merge($allResults, $decodedResponse['results']);
+                $nextPageUrl = $decodedResponse['info']['next'];
+
+            } while ($nextPageUrl !== null);
+
+            $cachedResults->set($allResults);
+            $this->cache->save($cachedResults);
+        } else {
+            $allResults = $cachedResults->get();
         }
 
-        return $decodedResponse;
+        return $allResults;
     }
 
     public function getAllCharacters(): array
     {
-        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/character');
+        return $this->getAllPages('https://rickandmortyapi.com/api/character');
     }
 
     public function getSingleCharacter(int $characterId): array
     {
-        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/character/'.$characterId);
+        return $this->getAllPages('https://rickandmortyapi.com/api/character/'.$characterId);
     }
 
     public function getAllLocations(): array
     {
-        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/location');
+        return $this->getAllPages('https://rickandmortyapi.com/api/location');
     }
 
     public function getAllEpisodes(): array
     {
-        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/episode');
+        return $this->getAllPages('https://rickandmortyapi.com/api/episode');
     }
 
     public function getAllDimensions(): array
     {
         try {
-            $data = $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/location');
+            $data = $this->getAllPages('https://rickandmortyapi.com/api/location');
 
-            if (isset($data['results']) && is_array($data['results'])) {
+            if (isset($data) && is_array($data)) {
                 return array_map(function ($dimension) {
                     return $dimension['name'];
-                }, $data['results']);
+                }, $data);
             } else {
                 return ['No dimensions found.'];
             }
@@ -60,6 +88,6 @@ class RickAndMortyApiService
 
     public function getEpisodeDetails(): array
     {
-        return $this->guzzleClient('GET', 'https://rickandmortyapi.com/api/episode');
+        return $this->getAllPages('https://rickandmortyapi.com/api/episode');
     }
 }

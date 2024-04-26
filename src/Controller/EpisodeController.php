@@ -13,7 +13,7 @@ class EpisodeController extends AbstractController
     public function episodes(): Response
     {
         $characterService = new RickAndMortyApiService();
-        $episodes = $characterService->getAllEpisodes()['results'];
+        $episodes = $characterService->getAllEpisodes();
 
         return $this->render('episodes/episodes.html.twig', [
             'episodes' => $episodes,
