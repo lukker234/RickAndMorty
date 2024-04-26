@@ -35,8 +35,12 @@ class RickAndMortyApiService
                     throw new Exception('Error decoding JSON response from API');
                 }
 
-                $allResults = array_merge($allResults, $decodedResponse['results']);
-                $nextPageUrl = $decodedResponse['info']['next'];
+                $allResults = array_merge($allResults, $decodedResponse['results'] ?? $decodedResponse);
+                $nextPageUrl = $decodedResponse['info']['next'] ?? $decodedResponse;
+
+                if (!isset($decodedResponse['info'])) {
+                    break;
+                }
 
             } while ($nextPageUrl !== null);
 
