@@ -8,7 +8,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class RickAndMortyApiService
 {
-    private $cache;
+    private FilesystemAdapter $cache;
 
     public function __construct()
     {
@@ -16,69 +16,67 @@ class RickAndMortyApiService
         $this->cache = new FilesystemAdapter();
     }
 
-    public function getAllPages(string $url): array
+    public function getAllPages(string $resourceType): array
     {
+        $url = 'https://rickandmortyapi.com/api/' . $resourceType;
         $cacheKey = md5($url);
-        $cachedResults = $this->cache->getItem($cacheKey);
+        $cachedItem = $this->cache->getItem($cacheKey);
 
-        if (!$cachedResults->isHit()) {
-            $client = new Client();
-            $allResults = [];
-            $nextPageUrl = $url;
-
-            do {
-                $response = $client->request('GET', $nextPageUrl);
-                $bodyContent = $response->getBody()->getContents();
-                $decodedResponse = json_decode($bodyContent, true);
-
-                if ($decodedResponse === null) {
-                    throw new Exception('Error decoding JSON response from API');
-                }
-
-                $allResults = array_merge($allResults, $decodedResponse['results'] ?? $decodedResponse);
-                $nextPageUrl = $decodedResponse['info']['next'] ?? null;
-
-            } while ($nextPageUrl !== null);
-
-            $cachedResults->set($allResults);
-            $this->cache->save($cachedResults);
+        if (!$cachedItem->isHit()) {
+            $allResults = $this->fetchDataFromApi($url);
+            $cachedItem->set($allResults);
+            $cachedItem->expiresAfter(3600);
+            $this->cache->save($cachedItem);
         } else {
-            $allResults = $cachedResults->get();
+            $allResults = $cachedItem->get();
         }
+
+        return $allResults;
+    }
+
+    private function fetchDataFromApi(string $url): array
+    {
+        $client = new Client();
+        $allResults = [];
+        $nextPageUrl = $url;
+
+        do {
+            $response = $client->request('GET', $nextPageUrl);
+            $bodyContent = $response->getBody()->getContents();
+            $decodedResponse = json_decode($bodyContent, true);
+
+            if ($decodedResponse === null) {
+                throw new Exception('Error decoding JSON response from API');
+            }
+
+            $allResults = array_merge($allResults, $decodedResponse['results'] ?? $decodedResponse);
+            $nextPageUrl = $decodedResponse['info']['next'] ?? null;
+
+        } while ($nextPageUrl !== null);
 
         return $allResults;
     }
 
     public function getAllCharacters(): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/character');
-    }
-
-    public function getSingleCharacter(int $characterId): array
-    {
-        return $this->getAllPages('https://rickandmortyapi.com/api/character/'.$characterId);
+        return $this->getAllPages('character');
     }
 
     public function getAllLocations(): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/location');
-    }
-
-    public function getSingleLocation(int $locationId): array
-    {
-        return $this->getAllPages('https://rickandmortyapi.com/api/location/'.$locationId);
+        return $this->getAllPages('location');
     }
 
     public function getAllEpisodes(): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/episode');
+        return $this->getAllPages('episode');
     }
 
     public function getAllDimensions(): array
     {
         try {
             $dimensions = [];
-            $locations = $this->getAllPages('https://rickandmortyapi.com/api/location');
+            $locations = $this->getAllLocations();
 
             foreach ($locations as $location) {
                 $dimension = $location['dimension'];
@@ -115,8 +113,13 @@ class RickAndMortyApiService
         }
     }
 
-    public function getEpisodeDetails(): array
+    public function getSingleCharacter(int $characterId): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/episode');
+        return $this->getAllPages('https://rickandmortyapi.com/api/character/'.$characterId);
+    }
+
+    public function getSingleLocation(int $locationId): array
+    {
+        return $this->getAllPages('https://rickandmortyapi.com/api/location/'.$locationId);
     }
 }
