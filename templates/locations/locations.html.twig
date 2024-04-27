@@ -2,6 +2,12 @@
 
 {% block body %}
 
+    <div class="block justify-between max-w-md rounded ml-auto">
+        {% include 'locations/location_dropdown.html.twig' %}
+    </div>
+
+    {% include 'locations/location_details.html.twig' %}
+
 {% endblock %}
 
 {% include 'footer.html.twig' %}

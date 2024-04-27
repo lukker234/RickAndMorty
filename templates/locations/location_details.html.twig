@@ -1,0 +1,49 @@
+<div class="container w-1/4">
+    <div id="location-details"></div>
+</div>
+
+    <script>
+        function openCharacterPage(characterId) {
+            const baseUrl = window.location.origin;
+            window.location.href = `${baseUrl}/character/${characterId}`;
+        }
+
+        function showLocationDetails() {
+            const locationUrl = document.getElementById("location").value;
+
+            console.log(locationUrl);
+
+            fetch(locationUrl)
+                .then(response => response.json())
+                .then(data => {
+                    let locationDetailsHTML = `
+                        <h2>${data.name}</h2>
+                        <p>Type: ${data.type}</p>
+                        <p>Dimension: ${data.dimension}</p>
+                        <p>Characters:</p>
+                        <div class="overflow-x-auto p-2 mb-4 max-h-96 grid grid-cols-3 gap-4">`;
+
+                    const characterPromises = data.residents.map(characterUrl =>
+                        fetch(characterUrl)
+                            .then(response => response.json())
+                            .then(characterData => {
+                                locationDetailsHTML += `
+                                    <div class="items-center justify-center" onclick="openCharacterPage('${characterData.id}')">
+                                        <img src="${characterData.image}" class="max-w-full h-auto rounded-lg" alt="${characterData.name}">
+                                        <p class="text-center">${characterData.name}</p>
+                                    </div>`;
+                            })
+                    );
+
+                    console.log(characterPromises);
+
+                    Promise.all(characterPromises)
+                        .then(() => {
+                            locationDetailsHTML += `</div>`;
+                            document.getElementById("location-details").innerHTML = locationDetailsHTML;
+                        })
+                        .catch(error => console.error('Error fetching character details:', error));
+                })
+                .catch(error => console.error('Error fetching location details:', error));
+        }
+    </script>

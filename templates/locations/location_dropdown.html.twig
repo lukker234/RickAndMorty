@@ -1,0 +1,9 @@
+<div class="container">
+    <h1>Rick and Morty Locations</h1>
+    <label for="location">Select a location:</label>
+    <select name="location" id="location" onchange="showLocationDetails()">
+        {% for location in locations %}
+            <option value="{{ location.url }}">{{ location.name }}</option>
+        {% endfor %}
+    </select>
+</div>
