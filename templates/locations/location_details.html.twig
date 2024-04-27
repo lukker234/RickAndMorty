@@ -11,8 +11,6 @@
         function showLocationDetails() {
             const locationUrl = document.getElementById("location").value;
 
-            console.log(locationUrl);
-
             fetch(locationUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -34,8 +32,6 @@
                                     </div>`;
                             })
                     );
-
-                    console.log(characterPromises);
 
                     Promise.all(characterPromises)
                         .then(() => {

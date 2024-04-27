@@ -9,8 +9,7 @@
         }
 
         function showDimensionDetails() {
-            const dimensionSelect = document.getElementById("dimension");
-            const selectedDimensionName = dimensionSelect.value;
+            const selectedDimensionName = document.getElementById("dimension").value;
             const dimensions = {{ dimensions|json_encode|raw }};
             const selectedDimension = dimensions.find(dimension => dimension.name === selectedDimensionName);
 
