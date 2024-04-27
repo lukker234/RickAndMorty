@@ -86,9 +86,12 @@ class RickAndMortyApiService
                 foreach ($dimensions as $existingDimension) {
                     if ($existingDimension['name'] === $dimension) {
                         // Merge residents
-                        $existingDimension['residents'] = array_merge($existingDimension['residents'], array_map(function ($residentUrl) {
-                            return $residentUrl;
-                        }, $location['residents']));
+                        $existingDimension['residents'] =
+                            array_merge($existingDimension['residents'],
+                                array_map(function ($residentUrl) {
+                                    return $residentUrl;
+                                }, $location['residents'])
+                            );
 
                         $dimensionExists = true;
                         break;
@@ -115,11 +118,11 @@ class RickAndMortyApiService
 
     public function getSingleCharacter(int $characterId): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/character/'.$characterId);
+        return $this->getAllPages('character/'.$characterId);
     }
 
     public function getSingleLocation(int $locationId): array
     {
-        return $this->getAllPages('https://rickandmortyapi.com/api/location/'.$locationId);
+        return $this->getAllPages('location/'.$locationId);
     }
 }
