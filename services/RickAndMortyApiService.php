@@ -64,6 +64,11 @@ class RickAndMortyApiService
         return $this->getAllPages('https://rickandmortyapi.com/api/location');
     }
 
+    public function getSingleLocation(int $locationId): array
+    {
+        return $this->getAllPages('https://rickandmortyapi.com/api/location/'.$locationId);
+    }
+
     public function getAllEpisodes(): array
     {
         return $this->getAllPages('https://rickandmortyapi.com/api/episode');

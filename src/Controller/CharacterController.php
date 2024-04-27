@@ -25,9 +25,13 @@ class CharacterController extends AbstractController
     {
         $characterService = new RickAndMortyApiService();
         $character = $characterService->getSingleCharacter($characterId);
+        $location = $characterService->getSingleLocation(
+            substr($character['location']['url'], strrpos($character['location']['url'], '/') + 1)
+        );
 
         return $this->render('character/character.html.twig', [
             'character' => $character,
+            'dimension' => $location['dimension'],
         ]);
     }
 }
