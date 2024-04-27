@@ -9,35 +9,39 @@
         }
 
         function showDimensionDetails() {
-            const locationUrl = document.getElementById("dimension").value;
+            const dimensionSelect = document.getElementById("dimension");
+            const selectedDimensionName = dimensionSelect.value;
+            const dimensions = {{ dimensions|json_encode|raw }};
+            const selectedDimension = dimensions.find(dimension => dimension.name === selectedDimensionName);
 
-            fetch(locationUrl)
-                .then(response => response.json())
-                .then(data => {
-                    let dimensionDetailsHTML = `
-                        <h2>Dimension: ${data.name}</h2>
-                        <p>Characters:</p>
-                        <div class="overflow-x-auto p-2 mb-4 max-h-96 grid grid-cols-3 gap-4">`;
+            let dimensionDetailsHTML = `
+            <h2>Dimension: ${selectedDimensionName}</h2>
+            <p>Characters:</p>`
 
-                    const characterPromises = data.residents.map(characterUrl =>
-                        fetch(characterUrl)
-                            .then(response => response.json())
-                            .then(characterData => {
-                                dimensionDetailsHTML += `
-                                    <div class="items-center justify-center" onclick="openCharacterPage('${characterData.id}')">
-                                        <img src="${characterData.image}" class="max-w-full h-auto rounded-lg" alt="${characterData.name}">
-                                        <p class="text-center">${characterData.name}</p>
-                                    </div>`;
-                            })
-                    );
+            if (selectedDimension.residents.length === 0) {
+                dimensionDetailsHTML += `<p>No characters found.</p>`;
+            } else {
+                dimensionDetailsHTML += `
+                <div class="overflow-x-auto p-2 mb-4 max-h-96 grid grid-cols-3 gap-4">`;
+            }
 
-                    Promise.all(characterPromises)
-                        .then(() => {
-                            dimensionDetailsHTML += `</div>`;
-                            document.getElementById("dimension-details").innerHTML = dimensionDetailsHTML;
-                        })
-                        .catch(error => console.error('Error fetching character details:', error));
+            const characterPromises = selectedDimension.residents.map(characterUrl =>
+                fetch(characterUrl)
+                    .then(response => response.json())
+                    .then(characterData => {
+                        dimensionDetailsHTML += `
+                            <div class="items-center justify-center" onclick="openCharacterPage('${characterData.id}')">
+                                <img src="${characterData.image}" class="max-w-full h-auto rounded-lg" alt="${characterData.name}">
+                                <p class="text-center">${characterData.name}</p>
+                            </div>`;
+                    })
+            );
+
+            Promise.all(characterPromises)
+                .then(() => {
+                    dimensionDetailsHTML += `</div>`;
+                    document.getElementById("dimension-details").innerHTML = dimensionDetailsHTML;
                 })
-                .catch(error => console.error('Error fetching dimension details:', error));
+                .catch(error => console.error('Error fetching character details:', error));
         }
     </script>

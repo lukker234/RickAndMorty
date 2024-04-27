@@ -3,7 +3,7 @@
     <label for="dimension">Select a dimension:</label>
     <select name="dimension" id="dimension" onchange="showDimensionDetails()">
         {% for dimension in dimensions %}
-            <option value="{{ dimension.url }}">{{ dimension.name }}</option>
+            <option value="{{ dimension.name }}">{{ dimension.name }}</option>
         {% endfor %}
     </select>
 </div>

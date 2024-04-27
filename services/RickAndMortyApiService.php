@@ -72,15 +72,39 @@ class RickAndMortyApiService
     public function getAllDimensions(): array
     {
         try {
-            $data = $this->getAllPages('https://rickandmortyapi.com/api/location');
+            $dimensions = [];
+            $locations = $this->getAllPages('https://rickandmortyapi.com/api/location');
 
-            if (isset($data) && is_array($data)) {
-                return array_map(function ($dimension) {
-                    return $dimension;
-                }, $data);
-            } else {
-                return ['No dimensions found.'];
+            foreach ($locations as $location) {
+                $dimension = $location['dimension'];
+                $dimensionExists = false;
+
+                // Check if the dimension already exists in the $dimensions array
+                foreach ($dimensions as $existingDimension) {
+                    if ($existingDimension['name'] === $dimension) {
+                        // Merge residents
+                        $existingDimension['residents'] = array_merge($existingDimension['residents'], array_map(function ($residentUrl) {
+                            return $residentUrl;
+                        }, $location['residents']));
+
+                        $dimensionExists = true;
+                        break;
+                    }
+                }
+
+                // If the dimension doesn't exist, add it to the $dimensions array
+                if (!$dimensionExists) {
+                    $dimensions[] = [
+                        'name' => $dimension,
+                        'type' => $location['type'],
+                        'residents' => array_map(function ($residentUrl) {
+                            return $residentUrl;
+                        }, $location['residents']),
+                    ];
+                }
             }
+
+            return $dimensions;
         } catch (Exception $e) {
             return ['Error: ' . $e->getMessage()];
         }
