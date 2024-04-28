@@ -4,8 +4,8 @@
     <div class="container max-w-sm">
         <h1 class="text-center">Character Details</h1>
         <div class="text-center ml-auto mr-auto">
-            <img class="mr-auto ml-auto" src="{{ character.image }}" alt="{{ character.name }}">
-            <div>
+            <img class="mr-auto ml-auto mb-4" src="{{ character.image }}" alt="{{ character.name }}">
+            <div class="mb-4">
                 <h5>{{ character.name }}</h5>
                 <p>Status: {{ character.status }}</p>
                 <p>Species: {{ character.species }}</p>
@@ -13,8 +13,8 @@
                 <p>Origin: {{ character.origin.name }}</p>
                 <p>Dimension: {{ dimension }}</p>
                 <p>Location: {{ character.location.name }}</p>
-                <a href="{{ character.url }}" class="btn btn-primary">See api result</a>
             </div>
+            <a href="{{ character.url }}" class="btn btn-primary">See api result</a>
         </div>
     </div>
 {% endblock %}
