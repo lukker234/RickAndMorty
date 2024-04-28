@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DimensionController extends AbstractController
 {
-    #[Route('/dimensions')]
+    #[Route('/dimensions', name: 'dimensions')]
     public function dimensions(): Response
     {
         $characterService = new RickAndMortyApiService();

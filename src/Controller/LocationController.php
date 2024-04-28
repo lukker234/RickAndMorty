@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LocationController extends AbstractController
 {
-    #[Route('/locations')]
+    #[Route('/locations', name: 'locations')]
     public function locations(): Response
     {
         $characterService = new RickAndMortyApiService();
