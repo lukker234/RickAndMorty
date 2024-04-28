@@ -39,14 +39,7 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    .enablePostCssLoader((options) => {
-        options.postcssOptions = {
-            plugins: [
-                tailwindcss('./tailwind.config.js'),
-                // other PostCSS plugins if needed
-            ],
-        };
-    })
+    .enablePostCssLoader()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
