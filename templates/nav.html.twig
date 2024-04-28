@@ -2,21 +2,21 @@
     <ul class="flex place-content-center bg-white py-4 -mt-5">
         <li class="
             mr-4
-            {% if app.request.attributes.get('_route') == 'dimensions' %}underline{% endif %}
-            decoration-blue-400
-            decoration-4
-            underline-offset-8
-        ">
-            <a href="{{ path('dimensions') }}">Dimensions</a>
-        </li>
-        <li class="
-            mr-4
             {% if app.request.attributes.get('_route') == 'episodes' %}underline{% endif %}
             decoration-blue-400
             decoration-4
             underline-offset-8
         ">
             <a href="{{ path('episodes') }}">Episodes</a>
+        </li>
+        <li class="
+            mr-4
+            {% if app.request.attributes.get('_route') == 'dimensions' %}underline{% endif %}
+            decoration-blue-400
+            decoration-4
+            underline-offset-8
+        ">
+            <a href="{{ path('dimensions') }}">Dimensions</a>
         </li>
         <li class="
             mr-4
