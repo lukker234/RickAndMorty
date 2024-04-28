@@ -1,5 +1,5 @@
 <div class="container w-1/4">
-    <div id="dimension-details"></div>
+    <div id="dimension-details">Select a dimension</div>
 </div>
 
     <script>
@@ -14,8 +14,8 @@
             const selectedDimension = dimensions.find(dimension => dimension.name === selectedDimensionName);
 
             let dimensionDetailsHTML = `
-            <h2>Dimension: ${selectedDimensionName}</h2>
-            <p>Characters:</p>`
+                <h2>Dimension: ${selectedDimensionName}</h2>
+                <p>Characters:</p>`
 
             if (selectedDimension.residents.length === 0) {
                 dimensionDetailsHTML += `<p>No characters found.</p>`;
