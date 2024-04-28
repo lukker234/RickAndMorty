@@ -37,42 +37,6 @@ select {
     border: 1px solid #ccc;
     border-radius: 5px;
     appearance: none;
-    background-color: #f9f9f9;
     cursor: pointer;
     outline: none;
-}
-
-select:hover {
-    border-color: #999;
-}
-
-select:focus {
-    border-color: #555;
-}
-
-option {
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #eee;
-    padding: 10px;
-}
-
-option:hover {
-    background-color: #e0e0e0;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #45a049;
 }
