@@ -9,13 +9,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LocationController extends AbstractController
 {
+    private RickAndMortyApiService $characterService;
+
+    public function __construct(RickAndMortyApiService $characterService)
+    {
+        $this->characterService = $characterService;
+    }
+
     #[Route('/locations', name: 'locations')]
     public function locations(): Response
     {
-        $characterService = new RickAndMortyApiService();
-        $locations = $characterService->getAllLocations();
-
-//        dd($locations);
+        $locations  =$this->characterService->getAllLocations();
 
         return $this->render('locations/locations.html.twig', [
             'locations' => $locations,

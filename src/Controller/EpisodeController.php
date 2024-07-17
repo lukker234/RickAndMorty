@@ -9,11 +9,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EpisodeController extends AbstractController
 {
+    private RickAndMortyApiService $characterService;
+
+    public function __construct(RickAndMortyApiService $characterService)
+    {
+        $this->characterService = $characterService;
+    }
+
     #[Route('/episodes', name: 'episodes')]
     public function episodes(): Response
     {
-        $characterService = new RickAndMortyApiService();
-        $episodes = $characterService->getAllEpisodes();
+        $episodes = $this->characterService->getAllEpisodes();
 
         return $this->render('episodes/episodes.html.twig', [
             'episodes' => $episodes,

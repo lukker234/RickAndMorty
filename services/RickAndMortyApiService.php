@@ -4,6 +4,7 @@ namespace services;
 
 use Exception;
 use GuzzleHttp\Client;
+use RuntimeException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class RickAndMortyApiService
@@ -12,7 +13,6 @@ class RickAndMortyApiService
 
     public function __construct()
     {
-        // Initialize the cache adapter
         $this->cache = new FilesystemAdapter();
     }
 
@@ -46,15 +46,15 @@ class RickAndMortyApiService
             $decodedResponse = json_decode($bodyContent, true);
 
             if ($decodedResponse === null) {
-                throw new Exception('Error decoding JSON response from API');
+                throw new RuntimeException('Error decoding JSON response from API');
             }
 
-            $allResults = array_merge($allResults, $decodedResponse['results'] ?? $decodedResponse);
+            $allResults[] = $decodedResponse['results'] ?? $decodedResponse;
             $nextPageUrl = $decodedResponse['info']['next'] ?? null;
 
         } while ($nextPageUrl !== null);
 
-        return $allResults;
+        return array_merge(...$allResults);
     }
 
     public function getAllCharacters(): array
@@ -82,30 +82,23 @@ class RickAndMortyApiService
                 $dimension = $location['dimension'];
                 $dimensionExists = false;
 
-                // Check if the dimension already exists in the $dimensions array
-                foreach ($dimensions as $existingDimension) {
+                foreach ($dimensions as &$existingDimension) {
                     if ($existingDimension['name'] === $dimension) {
-                        // Merge residents
-                        $existingDimension['residents'] =
-                            array_merge($existingDimension['residents'],
-                                array_map(function ($residentUrl) {
-                                    return $residentUrl;
-                                }, $location['residents'])
-                            );
+                        $existingDimension['residents'] = array_merge(
+                            $existingDimension['residents'],
+                            $location['residents']
+                        );
 
                         $dimensionExists = true;
                         break;
                     }
                 }
 
-                // If the dimension doesn't exist, add it to the $dimensions array
                 if (!$dimensionExists) {
                     $dimensions[] = [
                         'name' => $dimension,
                         'type' => $location['type'],
-                        'residents' => array_map(function ($residentUrl) {
-                            return $residentUrl;
-                        }, $location['residents']),
+                        'residents' => $location['residents'],
                     ];
                 }
             }
@@ -118,11 +111,11 @@ class RickAndMortyApiService
 
     public function getSingleCharacter(int $characterId): array
     {
-        return $this->getAllPages('character/'.$characterId);
+        return $this->getAllPages('character/' . $characterId);
     }
 
     public function getSingleLocation(int $locationId): array
     {
-        return $this->getAllPages('location/'.$locationId);
+        return $this->getAllPages('location/' . $locationId);
     }
 }

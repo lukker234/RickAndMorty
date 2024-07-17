@@ -9,32 +9,45 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CharacterController extends AbstractController
 {
-    #[Route('/characters/')]
+    private RickAndMortyApiService $characterService;
+
+    public function __construct(RickAndMortyApiService $characterService)
+    {
+        $this->characterService = $characterService;
+    }
+
+    #[Route('/characters/', name: 'characters')]
     public function allCharacters(): Response
     {
-        $characterService = new RickAndMortyApiService();
-        $characters = $characterService->getAllCharacters()['results'];
+        $characters = $this->characterService->getAllCharacters()['results'];
 
         return $this->render('character/character.html.twig', [
             'characters' => $characters,
         ]);
     }
 
-    #[Route('/character/{characterId}')]
+    #[Route('/character/{characterId}', name: 'character')]
     public function getCharacterInfo(int $characterId): Response
     {
-        $characterService = new RickAndMortyApiService();
-        $character = $characterService->getSingleCharacter($characterId);
-        $locationUrl = $character['location']['url'];
+        try {
+            $character = $this->characterService->getSingleCharacter($characterId);
 
-        if (!empty($locationUrl)) {
-            $locationId = substr($locationUrl, strrpos($locationUrl, '/') + 1);
-            $location = $characterService->getSingleLocation($locationId);
+            if (isset($character['location']['url'])) {
+                $locationUrl = $character['location']['url'];
+                $locationId = substr($locationUrl, strrpos($locationUrl, '/') + 1);
+                $location = $this->characterService->getSingleLocation($locationId);
+                $dimension = $location['dimension'] ?? 'unknown';
+            } else {
+                $dimension = 'unknown';
+            }
+
+            return $this->render('character/character.html.twig', [
+                'character' => $character,
+                'dimension' => $dimension,
+            ]);
+        } catch (\Exception $e) {
+            // Handle API exceptions or not found errors
+            throw $this->createNotFoundException('Character not found');
         }
-
-        return $this->render('character/character.html.twig', [
-            'character' => $character,
-            'dimension' => $location['dimension'] ?? 'unknown',
-        ]);
     }
 }

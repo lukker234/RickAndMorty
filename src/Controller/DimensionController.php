@@ -9,11 +9,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DimensionController extends AbstractController
 {
+    private RickAndMortyApiService $characterService;
+
+    public function __construct(RickAndMortyApiService $characterService)
+    {
+        $this->characterService = $characterService;
+    }
+
     #[Route('/dimensions', name: 'dimensions')]
     public function dimensions(): Response
     {
-        $characterService = new RickAndMortyApiService();
-        $dimensions = $characterService->getAllDimensions();
+        $dimensions = $this->characterService->getAllDimensions();
 
         return $this->render('dimensions/dimensions.html.twig', [
             'dimensions' => $dimensions,
