@@ -23,25 +23,31 @@ This application offers insights into the characters featured in the beloved sho
     git clone https://github.com/lukker234/RickAndMorty.git
     ```
 
-2. Install PHP dependencies using Composer:
+2. Copy .env.example and name it .env:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+3. Install PHP dependencies using Composer:
 
     ```bash
     composer install
     ```
 
-3. Install JavaScript dependencies using npm:
+4. Install JavaScript dependencies using npm:
 
     ```bash
     npm install
     ```
 
-4. Build assets:
+5. Build assets:
 
     ```bash
     npm run dev
     ```
 
-5. Run the Symfony development server:
+6. Run the Symfony development server:
 
     ```bash
     symfony server:start
