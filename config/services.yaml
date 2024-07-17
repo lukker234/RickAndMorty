@@ -6,8 +6,18 @@
 parameters:
 
 services:
+    GuzzleHttp\Client:
+        arguments:
+            $config: [ ]
+
     services\RickAndMortyApiService:
         class: services\RickAndMortyApiService
+        arguments:
+            $client: '@GuzzleHttp\Client'
+            $cache: '@cache.app'
+            $logger: '@logger'
+            $baseUrl: '%env(RICK_AND_MORTY_API_BASE_URL)%'
+
 
     # default configuration for services in *this* file
     _defaults:
