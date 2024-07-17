@@ -19,7 +19,7 @@ class LocationController extends AbstractController
     #[Route('/locations', name: 'locations')]
     public function locations(): Response
     {
-        $locations  =$this->characterService->getAllLocations();
+        $locations = $this->characterService->getAllLocations();
 
         return $this->render('locations/locations.html.twig', [
             'locations' => $locations,
